@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: webapp
+
+  cloud:
+    config:
+      name: webapp
+      inetutils:
+        preferred-networks:
+          - 192.168
+          - 10.0
+      discovery:
+        service-id: config
+        enabled: true
+
+eureka:
+  instance:
+    hostname: ${HOST_HOSTNAME}
+#    instance-id: ${HOST_HOSTNAME}:${spring.application.name}:${spring.application.instance_id:${random.value}}
+    instance-id: ${HOST_HOSTNAME}:${server.port}:${spring.application.name}:${random.value}
+  client:
+    enabled: true
+#    region: default
+    registryFetchIntervalSeconds: 10
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_HOST}:${DISCOVERY_PORT}/eureka/
+
+---
+
+spring:
+  profiles: local
+  cloud:
+    config:
+      enabled: false
+      discovery:
+        enabled: false
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+

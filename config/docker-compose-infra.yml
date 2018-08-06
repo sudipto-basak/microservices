@@ -1,0 +1,42 @@
+version: "3"
+services:
+  config:
+    # replace username/repo:tag with your name and image details
+    image: sudiptobasak/config:latest
+#    container_name: config-service
+#    hostname: resorthost
+#    build: ./config
+    ports:
+      - "8081:8081"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 300M
+    networks:
+      - ms-net
+  discovery:
+    # replace username/repo:tag with your name and image details
+    image: sudiptobasak/discovery:latest
+#    container_name: discovery-service
+#    hostname: resorthost
+#    build: ./discovery
+    ports:
+      - "8000:8000"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 300M
+    networks:
+      - ms-net
+networks:
+  ms-net:
+    external: true
+

@@ -1,0 +1,59 @@
+version: "3"
+services:
+  discovery:
+    # replace username/repo:tag with your name and image details
+    image: sudiptobasak/discovery:latest
+    ports:
+      - "8000:8000"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 256M
+    networks:
+      - ms-net
+  config:
+    # replace username/repo:tag with your name and image details
+    image: sudiptobasak/config:latest
+    environment:
+      - HOST_HOSTNAME={{.Node.Hostname}}
+      - DISCOVERY_HOST=${DISCOVERY_HOST}
+      - DISCOVERY_PORT=${DISCOVERY_PORT}
+    ports:
+      - "8081:8081"
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 128M
+    networks:
+      - ms-net
+  gateway:
+    # replace username/repo:tag with your name and image details
+    image: sudiptobasak/gateway:latest
+    environment:
+      - HOST_HOSTNAME={{.Node.Hostname}}
+      - DISCOVERY_HOST=${DISCOVERY_HOST}
+      - DISCOVERY_PORT=${DISCOVERY_PORT}
+    ports:
+      - "9090:9090"
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 128M
+    networks:
+      - ms-net
+networks:
+  ms-net:
+    external: true
+

@@ -1,0 +1,24 @@
+server:
+  port: ${DISCOVERY_PORT:8000}
+
+spring:
+  application:
+    name: discovery
+  cloud:
+    config:
+      enabled: false
+#      discovery:
+#        enabled: true
+
+eureka:
+  instance:
+    hostname: ${spring.application.name}
+#    hostname: ${spring.application.name}
+#    preferIpAddress: true
+    instance-id: ${HOST_HOSTNAME}:${server:port}:${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    serviceUrl:
+      defaultZone: http://${spring.application.name}:${server.port}/eureka/
+

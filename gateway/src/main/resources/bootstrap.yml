@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: gateway
+
+  cloud:
+    config:
+      name: gateway
+      inetutils:
+        preferred-networks:
+          - 192.168
+          - 10.0
+      discovery:
+        service-id: config
+        enabled: true
+
+eureka:
+  instance:
+    hostname: ${spring.application.name}
+#    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${server.port}}
+    instance-id: ${HOST_HOSTNAME}:${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    enabled: true
+#    region: default
+    registryFetchIntervalSeconds: 10
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_HOST}:${DISCOVERY_PORT}/eureka/

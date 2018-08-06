@@ -1,0 +1,20 @@
+server:
+  port: 9091
+
+spring:
+  application:
+    name: config
+    profiles: local
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///${user.home}/git/myrepositories/application-config
+
+#eureka:
+#  client:
+#    region: default
+#    registryFetchIntervalSeconds: 10
+#    serviceUrl:
+#      defaultZone: http://localhost:8085/eureka/

@@ -1,0 +1,29 @@
+version: "3"
+services:
+  resort:
+    # replace username/repo:tag with your name and image details
+    image: localhost:5000/resort:latest
+    environment:
+      - HOST_HOSTNAME={{.Node.Hostname}}
+      - DISCOVERY_HOST=${DISCOVERY_HOST}
+      - DISCOVERY_PORT=${DISCOVERY_PORT}
+      - CONFIG_HOST=${CONFIG_HOST}
+      - CONFIG_PORT=${CONFIG_PORT}
+#    extra_hosts:
+#      - "${HOST_HOSTNAME}:${HOST_IP}"
+#      - "${DISCOVERY_HOST}:${DISCOVERY_IP}"
+    ports:
+      - "9100:9100"
+    deploy:
+      replicas: 4
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 256M
+    networks:
+      - ms-net
+networks:
+  ms-net:
+    external: true

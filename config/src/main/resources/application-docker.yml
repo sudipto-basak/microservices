@@ -1,0 +1,32 @@
+server:
+  port: ${CONFIG_PORT:9091}
+
+spring:
+  application:
+    name: config
+
+  cloud:
+    config:
+      inetutils:
+        preferred-networks:
+          - 192.168
+          - 10.0
+      server:
+        git:
+          uri: https://github.com/sudipto-basak/application-config.git
+      discovery:
+        enabled: true
+
+eureka:
+  instance:
+    hostname: ${spring.application.name}
+#    service-id: discovery
+#    preferIpAddress: true
+#    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${server.port}}
+    instance-id: ${HOST_HOSTNAME}:${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    enabled: true
+#    region: default
+    registryFetchIntervalSeconds: 10
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_HOST}:${DISCOVERY_PORT}/eureka/

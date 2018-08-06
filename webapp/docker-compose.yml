@@ -1,0 +1,32 @@
+version: "3"
+services:
+  webapp:
+    # replace username/repo:tag with your name and image details
+    image: sudiptobasak/webapp:latest
+    container_name: webapp
+    hostname: webapp-host
+    build: .
+    environment:
+      - HOST_HOSTNAME=${HOST_HOSTNAME}
+      - HOST_IP=${HOST_IP}
+      - DISCOVERY_HOST=${DISCOVERY_HOST}
+      - DISCOVERY_PORT=${DISCOVERY_PORT}
+    extra_hosts:
+      - "${HOST_HOSTNAME}:${HOST_IP}"
+      - "${DISCOVERY_HOST}:${DISCOVERY_IP}"
+    ports:
+      - "11000:11000"
+#    deploy:
+#      replicas: 4
+#      restart_policy:
+#        condition: on-failure
+#      resources:
+#        limits:
+#          cpus: "0.3"
+#          memory: 300M
+#    networks:
+#      - default
+#networks:
+#  default:
+#    external:
+#      name: bridge

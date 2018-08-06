@@ -1,0 +1,12 @@
+server:
+  host: ${HOST:localhost}
+  port: ${PORT:11000}
+
+spring:
+  application:
+    name: webapp
+  thymeleaf:
+    cache: false
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html

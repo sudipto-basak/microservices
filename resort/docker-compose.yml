@@ -1,0 +1,30 @@
+version: "3"
+services:
+  resort:
+    # replace username/repo:tag with your name and image details
+    image: sudiptobasak/resort:latest
+    container_name: resort
+    hostname: resort-host
+    build: .
+    environment:
+      - HOST_HOSTNAME=${HOST_HOSTNAME}
+      - CONFIG_HOSTNAME=${CONFIG_HOSTNAME}
+      - CONFIG_HOST_IP=${CONFIG_HOST_IP}
+    extra_hosts:
+      - "${CONFIG_HOSTNAME}:${CONFIG_HOST_IP}"
+    ports:
+      - "9000:9000"
+#    deploy:
+#      replicas: 4
+#      restart_policy:
+#        condition: on-failure
+#      resources:
+#        limits:
+#          cpus: "0.3"
+#          memory: 300M
+    networks:
+      - default
+networks:
+  default:
+    external:
+      name: my-net

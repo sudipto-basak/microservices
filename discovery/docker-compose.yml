@@ -1,0 +1,26 @@
+version: "3"
+services:
+  discovery:
+    # replace username/repo:tag with your name and image details
+    image: sudiptobasak/discovery:latest
+    container_name: discovery
+    hostname: discovery-host
+    build: .
+    environment:
+      - HOST_HOSTNAME={{.Node.Hostname}}
+    ports:
+      - "8000:8000"
+#    deploy:
+#      replicas: 3
+#      restart_policy:
+#        condition: on-failure
+#      resources:
+#        limits:
+#          cpus: "0.3"
+#          memory: 300M
+    networks:
+      - default
+networks:
+  default:
+    external:
+      name: my-net

@@ -1,0 +1,63 @@
+version: "3"
+services:
+  discovery:
+    # replace username/repo:tag with your name and image details
+    image: localhost:5000/discovery:latest
+    environment:
+      - HOST_HOSTNAME={{.Node.Hostname}}
+    ports:
+      - "8000:8000"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 256M
+    networks:
+      - ms-net
+  config:
+    # replace username/repo:tag with your name and image details
+    image: localhost:5000/config:latest
+    environment:
+      - HOST_HOSTNAME={{.Node.Hostname}}
+      - DISCOVERY_HOST=${DISCOVERY_HOST}
+      - DISCOVERY_PORT=${DISCOVERY_PORT}
+    ports:
+      - "9091:9091"
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 128M
+    networks:
+      - ms-net
+  gateway:
+    # replace username/repo:tag with your name and image details
+    image: localhost:5000/gateway:latest
+    environment:
+      - HOST_HOSTNAME={{.Node.Hostname}}
+      - DISCOVERY_HOST=${DISCOVERY_HOST}
+      - DISCOVERY_PORT=${DISCOVERY_PORT}
+      - CONFIG_HOST=${CONFIG_HOST}
+      - CONFIG_PORT=${CONFIG_PORT}
+    ports:
+      - "9090:9090"
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 128M
+    networks:
+      - ms-net
+networks:
+  ms-net:
+    external: true
+

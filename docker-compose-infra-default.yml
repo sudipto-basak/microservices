@@ -1,0 +1,66 @@
+version: "3"
+services:
+  config:
+    # replace username/repo:tag with your name and image details
+    image: sudiptobasak/config:latest
+    container_name: config-service
+    hostname: config-host
+    build: ./config
+    environment:
+        - HOST_HOSTNAME=${HOSTNAME}
+    ports:
+      - "8081:8081"
+    # deploy:
+      # replicas: 2
+      # restart_policy:
+        # condition: on-failure
+      # resources:
+        # limits:
+          # cpus: "0.3"
+          # memory: 128M
+    networks:
+      - my-net
+  discovery:
+    # replace username/repo:tag with your name and image details
+    image: sudiptobasak/discovery:latest
+    container_name: discovery-service
+    hostname: discovery-host
+    build: ./discovery
+    environment:
+        - HOST_HOSTNAME=${HOSTNAME}
+    ports:
+      - "8000:8000"
+    # deploy:
+      # replicas: 1
+      # restart_policy:
+        # condition: on-failure
+      # resources:
+        # limits:
+          # cpus: "0.3"
+          # memory: 256M
+    networks:
+      - my-net
+  gateway:
+    # replace username/repo:tag with your name and image details
+    image: sudiptobasak/gateway:latest
+    container_name: gateway-service
+    hostname: gateway-host
+    build: ./discovery
+    environment:
+        - HOST_HOSTNAME=${HOSTNAME}
+    ports:
+      - "9090:9090"
+    # deploy:
+      # replicas: 2
+      # restart_policy:
+        # condition: on-failure
+      # resources:
+        # limits:
+          # cpus: "0.3"
+          # memory: 128M
+    networks:
+      - my-net
+networks:
+  my-net:
+    external: true
+
